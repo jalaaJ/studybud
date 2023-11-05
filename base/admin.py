@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Room
+
+# We need to register the model in order to be able to see it in the admin panel
+admin.site.register(Room)

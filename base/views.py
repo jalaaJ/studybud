@@ -11,7 +11,12 @@ from .forms import RoomForm
 
 # Create your views here.
 def home(request):
-    rooms = Room.objects.all()
+    # here, we make sure that the query parameter has a value
+    q = request.GET.get("q") if request.GET.get("q") != None else ""
+
+    # we filter the rooms by containing the query parameter that was passed
+    rooms = Room.objects.filter(topic__name__icontains=q)
+
     topics = Topic.objects.all()
     context = {"rooms": rooms, "topics": topics}
     return render(request, "base/home.html", context)

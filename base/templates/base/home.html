@@ -12,6 +12,8 @@
     <div>
       {% comment %} instead of the room/{{room.id}}, we can use the built in url
       tag {% endcomment %}
+      <a href="{% url 'update-room' room.id %}">Edit room</a>
+      <a href="">Delete room</a>
       <span>@{{room.host.username}}</span>
       <h5>
         {{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a>

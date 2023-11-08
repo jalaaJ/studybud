@@ -1,29 +1,26 @@
 {% extends 'main.html' %} {% block content %}
 
 <style>
-  .home-container{
+  .home-container {
     display: grid;
     grid-template-columns: 1fr 3fr;
   }
 </style>
 
 <div class="home-container">
-
   <div>
-
     <h3>Browse Topics</h3>
-    <hr>
+    <hr />
 
     <div>
       <a href="{% url 'home' %}">All</a>
     </div>
 
     {% for topic in topics %}
-      <div>
-        <a href="{% url 'home'  %}?q={{topic.name}}">{{topic.name}}</a>
-      </div>
+    <div>
+      <a href="{% url 'home'  %}?q={{topic.name}}">{{topic.name}}</a>
+    </div>
     {% endfor %}
-
   </div>
 
   <div>
@@ -34,10 +31,12 @@
       {% for room in rooms %}
 
       <div>
-        {% comment %} instead of the room/{{room.id}}, we can use the built in url
-        tag {% endcomment %}
+        {% comment %} instead of the room/{{room.id}}, we can use the built in
+        url tag {% endcomment %} {% if request.user == room.host %}
         <a href="{% url 'update-room' room.id %}">Edit room</a>
         <a href="{% url 'delete-room' room.id %}">Delete room</a>
+        {% endif %}
+
         <span>@{{room.host.username}}</span>
         <h5>
           {{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a>
@@ -49,7 +48,6 @@
       {% endfor %}
     </div>
   </div>
-
 </div>
 
 {% endblock %}

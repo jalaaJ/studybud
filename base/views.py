@@ -18,6 +18,9 @@ from django.http import HttpResponse
 def loginPage(request):
     # username = ""
     # password = ""
+    if request.user.is_authenticated:
+        return redirect("home")
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -25,12 +28,13 @@ def loginPage(request):
             user = User.objects.get(username=username)
         except:
             messages.error(request, "User doesn't exist")
+            return redirect("login")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect("home")
         else:
-            messages.error(request, "Username or password doesn't exist")
+            messages.error(request, "Wrong username or password")
     context = {}
     return render(request, "base/login_register.html", context)
 

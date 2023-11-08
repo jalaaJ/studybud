@@ -2,6 +2,9 @@ from django.shortcuts import redirect, render
 from .models import Room, Topic
 from .forms import RoomForm
 from django.db.models import Q
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 # rooms = [
 #     {"id": 1, "name": "Let's learn Python!"},
@@ -10,9 +13,29 @@ from django.db.models import Q
 # ]
 
 
+def loginPage(request):
+    username = ""
+    password = ""
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, "User doesn't exist")
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect("home")
+    else:
+        messages.error(request, "Username or password doesn't exist")
+    context = {}
+    return render(request, "base/login_register.html", context)
+
+
 # Create your views here.
 def home(request):
-    # here, we make sure that the query parameter has a value
+    # here, we make sure that the query parameter has a value using the inline if statement
     q = request.GET.get("q") if request.GET.get("q") != None else ""
 
     # we filter the rooms by containing the query parameter that was passed

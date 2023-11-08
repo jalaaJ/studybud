@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
 
 # rooms = [
 #     {"id": 1, "name": "Let's learn Python!"},
@@ -18,11 +19,13 @@ from django.http import HttpResponse
 def loginPage(request):
     # username = ""
     # password = ""
+    page = "login"
+
     if request.user.is_authenticated:
         return redirect("home")
 
     if request.method == "POST":
-        username = request.POST.get("username")
+        username = request.POST.get("username").lower()
         password = request.POST.get("password")
         try:
             user = User.objects.get(username=username)
@@ -35,13 +38,30 @@ def loginPage(request):
             return redirect("home")
         else:
             messages.error(request, "Wrong username or password")
-    context = {}
+    context = {"page": page}
     return render(request, "base/login_register.html", context)
 
 
 def logoutUser(request):
     logout(request)
     return redirect("home")
+
+
+def registerUser(request):
+    # page = "register"
+    form = UserCreationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect("home")
+        else:
+            messages.error(request, "An error occured during registration!")
+    context = {"form": form}
+    return render(request, "base/login_register.html", context)
 
 
 # Create your views here.

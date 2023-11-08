@@ -14,8 +14,8 @@ from django.contrib import messages
 
 
 def loginPage(request):
-    username = ""
-    password = ""
+    # username = ""
+    # password = ""
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -23,14 +23,19 @@ def loginPage(request):
             user = User.objects.get(username=username)
         except:
             messages.error(request, "User doesn't exist")
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect("home")
-    else:
-        messages.error(request, "Username or password doesn't exist")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        else:
+            messages.error(request, "Username or password doesn't exist")
     context = {}
     return render(request, "base/login_register.html", context)
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect("home")
 
 
 # Create your views here.

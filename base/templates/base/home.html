@@ -10,44 +10,13 @@
 <div class="home-container">
 
   <div>
-    <h3>Browse Topics</h3>
-    <hr />
-
-    <div>
-      <a href="{% url 'home' %}">All</a>
-    </div>
-
-    {% for topic in topics %}
-    <div>
-      <a href="{% url 'home'  %}?q={{topic.name}}">{{topic.name}}</a>
-    </div>
-    {% endfor %}
+    {% include 'base/topics_component.html' %}
   </div>
 
   <div>
     <h5>{{room_count}} Rooms Available</h5>
     <a href="{% url 'create-room' %}">Create a room</a>
-
-    <div>
-      {% for room in rooms %}
-
-      <div>
-        {% comment %} instead of the room/{{room.id}}, we can use the built in
-        url tag {% endcomment %} {% if request.user == room.host %}
-        <a href="{% url 'update-room' room.id %}">Edit room</a>
-        <a href="{% url 'delete-room' room.id %}">Delete room</a>
-        {% endif %}
-
-        <span>@{{room.host.username}}</span>
-        <h5>
-          {{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a>
-        </h5>
-        <small>{{room.topic.name}}</small>
-        <hr />
-      </div>
-
-      {% endfor %}
-    </div>
+    {% include 'base/feeds_component.html' %}
   </div>
 
   <div>

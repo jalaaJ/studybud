@@ -2,7 +2,7 @@
 <hr />
 {% for message in roomMessages %}
 <div>
-  <small>@{{message.user}} {{message.created | timesince}} ago</small>
+  <small><a href="{% url 'user-profile' message.user.id %}">@{{message.user}}</a> {{message.created | timesince}} ago</small>
   <small>Replied to "{{message.room}}"</small>
 
   <p>{{message}}</p>

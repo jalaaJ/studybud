@@ -8,16 +8,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 
-# rooms = [
-#     {"id": 1, "name": "Let's learn Python!"},
-#     {"id": 2, "name": "Design with me"},
-#     {"id": 3, "name": "Frontend developers"},
-# ]
-
 
 def loginPage(request):
-    # username = ""
-    # password = ""
     page = "login"
 
     if request.user.is_authenticated:
@@ -47,7 +39,6 @@ def logoutUser(request):
 
 
 def registerUser(request):
-    # page = "register"
     form = MyUserCreationForm()
     if request.method == "POST":
         form = MyUserCreationForm(request.POST)
@@ -132,12 +123,6 @@ def createRoom(request):
         )
         return redirect("home")
 
-        # form = RoomForm(request.POST)
-        # if form.is_valid():
-        #     room = form.save(commit=False)
-        #     room.host = request.user
-        #     room.save()
-
     context = {"form": form, "topics": topics}
     return render(request, "base/room_form.html", context)
 
@@ -161,10 +146,6 @@ def updateRoom(request, pk):
         room.description = request.POST.get("description")
         room.save()
         return redirect("home")
-
-        # form = RoomForm(request.POST, instance=room)
-        # if form.is_valid():
-        #     form.save()
 
     context = {"form": form, "topics": topics, "room": room}
     return render(request, "base/room_form.html", context)

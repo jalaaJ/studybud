@@ -15,7 +15,7 @@ def getRoutes(request):
 def getRooms(request):
     rooms = Room.objects.all()
 
-    # many=True becuase we're returning more than one value
+    # many=True because we're returning more than one value
     serilizer = RoomSerializer(rooms, many=True)
     return Response(serilizer.data)
 
